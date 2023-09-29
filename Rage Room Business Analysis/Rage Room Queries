@@ -1,0 +1,321 @@
+--Data from 1/02/2023 - 08/23/2023 
+-- Skills used: CTE, Aggregate Functions, Conditional Aggregate Functions, Window Functions, Date/Time Functions, Calculating AVG, Time Intervals, Partitions, 
+
+
+-- add ons for August organized based on Date and Time (So they can check who sold what Add-Ons)
+
+SELECT Activity_Add_On, Activity_Date, Activity_Time 
+FROM sqlportfolio..add_ons
+WHERE Activity_Date BETWEEN '2023-08-01' AND '2023-08-23'
+    AND Status = 'Fulfilled'
+GROUP BY Activity_Add_On, Activity_Date, Activity_Time
+ORDER BY Activity_Date, Activity_Time; 
+
+-- Amount of money made just on add ons in August (AddOnMoneyMade Rolling Count)
+
+SELECT
+    Activity_Add_On,
+    Activity_Date,
+    Activity_Time,
+    List_Price,
+    SUM(List_Price) OVER (PARTITION BY Activity_Add_On ORDER BY Activity_Date, Activity_Time) AS AddOnMoneyMade
+FROM sqlportfolio..add_ons
+WHERE Activity_Date BETWEEN '2023-08-01' AND '2023-08-23'
+GROUP BY Status, Activity_Add_On, Activity_Date, Activity_Time, List_Price
+ORDER BY Activity_Add_On, Activity_Date, Activity_Time;
+
+
+-- 2023 TotalPrice per Add_On 
+
+SELECT 
+    Activity_Add_On,
+    SUM(CASE WHEN Status = 'fulfilled' THEN List_Price ELSE 0 END) AS TotalPrice
+FROM sqlportfolio..add_ons
+WHERE YEAR(Activity_Date) = 2023    
+    AND(Activity_Date) <= '2023-08-23'
+GROUP BY Activity_Add_On
+ORDER BY TotalPrice DESC;
+
+
+-- 2023 TotalPrice and Count Per Packages 
+
+SELECT 
+    Activity_Add_On,
+    SUM(List_Price) AS TotalPrice,
+        COUNT(DISTINCT CASE WHEN Status = 'fulfilled' THEN Booking_ID END) AS PackagesPerCount
+FROM sqlportfolio..packages
+WHERE YEAR(Activity_Date) = 2023
+    AND Activity_Date <= '2023-08-23'
+GROUP BY Activity_Add_On
+ORDER BY TotalPrice DESC; 
+
+
+-- Package Sales Count for the current Year
+
+SELECT 
+    YEAR(Activity_Date) AS PurchaseYear,
+        COUNT(DISTINCT CASE WHEN Status = 'fulfilled' THEN Booking_ID END) AS PackageSalesCount,
+    SUM(CASE WHEN Activity_Add_ON = 'Couples' AND Status = 'Fulfilled' THEN 1 ELSE 0 END) AS CouplesCount,
+    SUM(CASE WHEN Activity_Add_ON = 'Fat Glass' AND Status = 'Fulfilled' THEN 1 ELSE 0 END) AS FatGlassCount,
+    SUM(CASE WHEN Activity_Add_ON LIKE '%Smashed%' AND Status = 'Fulfilled' THEN 1 ELSE 0 END) AS SmashedCount,
+    SUM(CASE WHEN Activity_Add_ON = 'Hammered' AND Status = 'Fulfilled' THEN 1 ELSE 0 END) AS HammeredCount,
+    SUM(CASE WHEN Activity_Add_ON = 'Obliterated' AND Status = 'Fulfilled' THEN 1 ELSE 0 END) AS OblitCount,
+    SUM(CASE WHEN Activity_Add_ON LIKE '%B.Y.O.B%' AND Status = 'Fulfilled' THEN 1 ELSE 0 END) AS BYOBCount   
+FROM sqlportfolio..Packages
+WHERE YEAR(Activity_Date) = 2023
+    AND Activity_Date <= '2023-08-23'
+GROUP BY YEAR(Activity_Date)
+ORDER BY PurchaseYear;
+
+
+--Package Sales Count for each Month in 2023 (up until 8/23)
+
+SELECT
+    YEAR(Activity_Date) AS PurchaseYear,
+    MONTH(Activity_Date) AS PurchaseMonth,
+        COUNT(DISTINCT CASE WHEN Status = 'fulfilled' THEN Booking_ID END) AS PackageSalesCount
+FROM
+    sqlportfolio..Packages
+WHERE
+    YEAR(Activity_Date) = 2023
+    AND Activity_Date <= '2023-08-23'
+GROUP BY
+    YEAR(Activity_Date),
+    MONTH(Activity_Date)
+ORDER BY
+    PurchaseYear, PurchaseMonth;
+
+-- Package sales count for each month per package
+SELECT
+    YEAR(Activity_Date) AS PurchaseYear,
+    MONTH(Activity_Date) AS PurchaseMonth, 
+        COUNT(Distinct CASE WHEN Status = 'fulfilled' THEN Booking_ID END) AS PackageSalesCount,
+    SUM(CASE WHEN Activity_Add_ON = 'Couples' AND Status = 'Fulfilled' THEN 1 ELSE 0 END) AS CouplesCount,
+    SUM(CASE WHEN Activity_Add_ON = 'Fat Glass' AND Status = 'Fulfilled' THEN 1 ELSE 0 END) AS FatGlassCount,
+    SUM(CASE WHEN Activity_Add_ON LIKE '%Smashed%' AND Status = 'Fulfilled' THEN 1 ELSE 0 END) AS SmashedCount,
+    SUM(CASE WHEN Activity_Add_ON = 'Hammered' AND Status = 'Fulfilled' THEN 1 ELSE 0 END) AS HammeredCount,
+    SUM(CASE WHEN Activity_Add_ON = 'Obliterated' AND Status = 'Fulfilled' THEN 1 ELSE 0 END) AS OblitCount,
+    SUM(CASE WHEN Activity_Add_ON LIKE '%B.Y.O.B%' AND Status = 'Fulfilled' THEN 1 ELSE 0 END) AS BYOBCount 
+FROM
+ sqlportfolio..packages
+WHERE 
+    YEAR(Activity_Date) = 2023
+    AND (Activity_Date) <='2023-08-23'
+GROUP BY 
+    YEAR(Activity_Date),
+    MONTH (Activity_Date)
+ORDER BY 
+    PurchaseYear, PurchaseMonth;
+
+
+-- Days where packages were purchased the most in 2023 
+
+WITH PackageDayCounts AS (
+    SELECT
+        Activity_Add_On,
+        DATEPART(YEAR, Activity_Date) AS Year,
+        Activity_Date,
+        COUNT(DISTINCT CASE WHEN Status = 'fulfilled' THEN Booking_ID END) AS DayCount
+    FROM sqlportfolio..packages
+    WHERE YEAR(Activity_Date) = 2023
+    AND Activity_Date <= '2023-08-23'
+    GROUP BY Activity_Add_On, DATEPART(YEAR, Activity_Date), Activity_Date
+),
+MaxPackageDayCounts AS (
+    SELECT
+        Activity_Add_On,
+        Year,
+        Activity_Date,
+        DayCount,
+        RANK() OVER (PARTITION BY Activity_Add_On, Year ORDER BY DayCount DESC) AS Rank
+    FROM PackageDayCounts
+)
+SELECT
+    Activity_Add_On,
+    Year,
+    Activity_Date,
+    DayCount
+FROM MaxPackageDayCounts
+WHERE Rank = 1
+ORDER BY Activity_Add_On, Year, DayCount DESC;
+
+ -- Peak Month for every individual package (2023)
+
+ WITH PackageMonthCounts AS (
+    SELECT
+        Activity_Add_On,
+        DATEPART(YEAR, Activity_Date) AS Year,
+        DATEPART(MONTH, Activity_Date) AS Month,
+        COUNT(DISTINCT CASE WHEN Status = 'fulfilled' THEN Booking_ID END) AS MonthlyPackageCount
+    FROM sqlportfolio..packages
+    WHERE YEAR(Activity_Date) = 2023
+    AND Activity_Date <= '2023-08-23'
+    GROUP BY Activity_Add_On, DATEPART(YEAR, Activity_Date), DATEPART(MONTH, Activity_Date)
+),
+MaxPackageMonthCounts AS (
+    SELECT
+        Activity_Add_On,
+        Year,
+        Month,
+        MonthlyPackageCount,
+        RANK() OVER (PARTITION BY Activity_Add_On, Year ORDER BY MonthlyPackageCount DESC) AS Rank
+    FROM PackageMonthCounts
+)
+SELECT
+    Activity_Add_On,
+    Year,
+    Month,
+    MonthlyPackageCount
+FROM MaxPackageMonthCounts
+WHERE Rank = 1
+ORDER BY Activity_Add_On, Year, MonthlyPackageCount DESC;
+
+-- Calculated the top days and times within the year 2023 when each package (Activity_Add_On) was bought the most
+
+WITH PackageDateTimeCounts AS (
+    SELECT
+        Activity_Add_On,
+        DATEPART(WEEKDAY, Activity_Date) AS Weekday,
+        DATEPART(HOUR, Activity_Time) AS Hour,
+        COUNT(DISTINCT CASE WHEN Status = 'fulfilled' THEN Booking_ID END) AS MaxTimePackageCount
+    FROM sqlportfolio..packages
+    WHERE YEAR(Activity_Date) = 2023
+    AND Activity_Date <= '2023-08-23'
+    GROUP BY Activity_Add_On, DATEPART(WEEKDAY, Activity_Date), DATEPART(HOUR, Activity_Time)
+),
+MaxPackageDateTimeCounts AS (
+    SELECT
+        Activity_Add_On,
+        Weekday,
+        Hour,
+        MaxTimePackageCount,
+        RANK() OVER (PARTITION BY Activity_Add_On ORDER BY MaxTimePackageCount DESC) AS Rank
+    FROM PackageDateTimeCounts
+)
+SELECT
+    Activity_Add_On,
+    Weekday,
+    CASE Weekday
+        WHEN 1 THEN 'Sunday'
+        WHEN 2 THEN 'Monday'
+        WHEN 3 THEN 'Tuesday'
+        WHEN 4 THEN 'Wednesday'
+        WHEN 5 THEN 'Thursday'
+        WHEN 6 THEN 'Friday'
+        WHEN 7 THEN 'Saturday'
+    END AS WeekdayName,
+    Hour,
+    MaxTimePackageCount
+FROM MaxPackageDateTimeCounts
+WHERE Rank = 1
+ORDER BY Activity_Add_On, Weekday, Hour;
+-- On AVG, how many packages a day were sold in 2023? 
+
+SELECT
+    AVG(PackagesPerDay) AS AveragePackagesPerDay
+FROM (
+    SELECT
+        COUNT(DISTINCT CASE WHEN Status = 'Fulfilled' THEN Booking_ID END) AS PackagesPerDay
+    FROM sqlportfolio..packages
+    WHERE YEAR(Activity_Date) = 2023
+    AND Activity_Date <= '2023-08-23'
+    GROUP BY Activity_Date
+) DailyPackageCounts;
+
+
+-- Avg of each Package sold 2023 
+
+SELECT
+    Activity_Add_On,
+    AVG(PackagesPerDay) AS AveragePackagesPerDay
+FROM (
+    SELECT
+        Activity_Add_On,
+        Activity_Date,
+        COUNT(DISTINCT CASE WHEN Status = 'Fulfilled' THEN Booking_ID END) AS PackagesPerDay
+    FROM sqlportfolio..packages
+    WHERE YEAR(Activity_Date) = 2023
+    AND Activity_Date <= '2023-08-23'
+    GROUP BY Activity_Add_On, Activity_Date
+) DailyPackageCounts
+GROUP BY Activity_Add_On
+ORDER BY Activity_Add_On;
+
+-- Canceled, Confirmed, Fulfilled Booking Percentages 
+
+SELECT
+    Status,
+    COUNT(DISTINCT Booking_ID) AS Total_Bookings,
+    ROUND(COUNT(DISTINCT Booking_ID) * 100.0 / Total_Bookings_Total, 2) AS Percentage
+FROM
+    sqlportfolio..packages
+JOIN (
+    SELECT
+        COUNT(DISTINCT Booking_ID) AS Total_Bookings_Total
+    FROM
+        sqlportfolio..packages
+    WHERE YEAR(Activity_Date) = 2023
+        AND Activity_Date <= '2023-08-23'
+) TotalCounts ON 1=1
+WHERE YEAR(Activity_Date) = 2023
+    AND Activity_Date <= '2023-08-23'
+GROUP BY
+    Status, Total_Bookings_Total
+ORDER BY
+    Status DESC;
+
+
+-- How many appts booked this year? 
+
+SELECT COUNT(DISTINCT CASE WHEN Status <> 'Canceled' THEN Booking_ID END) AS Total_Bookings
+FROM sqlportfolio..packages
+WHERE YEAR(Activity_Date) = 2023
+    AND Activity_Date <= '2023-08-23'
+
+-- Days/hours of cancellation 2023 
+
+SELECT 
+    DATEPART(WEEKDAY, Activity_Date) AS Weekday,
+    DATEPART(HOUR, Activity_Time) AS Cancellation_Hour,
+    COUNT(DISTINCT Booking_ID) AS Total_Cancellations
+FROM
+    sqlportfolio..packages
+WHERE
+    Status = 'Cancelled'
+    AND YEAR(Activity_Date) = 2023
+    AND Activity_Date <= '2023-08-23'
+GROUP BY
+    DATEPART(HOUR, Activity_Time), DATEPART(WEEKDAY, Activity_Date)
+ORDER BY
+    Total_Cancellations DESC;
+
+-- June to August BookingCount Between 2-4PM 
+
+SELECT 
+    YEAR(Activity_Date) AS Activity_Year,
+    MONTH(Activity_Date) AS Activity_Month,
+    COUNT(DISTINCT CASE WHEN Status = 'Fulfilled' THEN Booking_ID END) AS Total_Bookings_Two_Four
+FROM sqlportfolio..packages 
+WHERE YEAR(Activity_Date) = 2023
+    AND Activity_Date BETWEEN '2023-06-01' AND '2023-08-31'  -- June 1 to August 31
+    AND DATEPART(WEEKDAY, Activity_Date) IN (5, 6)  -- Thursday (5) and Friday (6)
+    AND DATEPART(HOUR, Activity_Time) BETWEEN 14 AND 16  -- 2 PM to 4 PM
+GROUP BY YEAR(Activity_Date), MONTH(Activity_Date)
+ORDER BY Activity_Year, Activity_Month;
+
+
+-- BookingCount From June to August From 2-4PM, seperated by month and hour 
+
+SELECT 
+    YEAR(Activity_Date) AS Activity_Year,
+    MONTH(Activity_Date) AS Activity_Month,
+    DATEPART(HOUR, Activity_Time) AS Activity_Hour,
+    COUNT(DISTINCT CASE WHEN Status = 'Fulfilled' THEN Booking_ID END) AS Total_Bookings
+FROM sqlportfolio..packages 
+WHERE YEAR(Activity_Date) = 2023
+    AND Activity_Date BETWEEN '2023-06-01' AND '2023-08-31'  -- June 1 to August 31
+    AND DATEPART(WEEKDAY, Activity_Date) IN (5, 6)  -- Thursday (5) and Friday (6)
+    AND DATEPART(HOUR, Activity_Time) BETWEEN 14 AND 16  -- 2 PM to 3 PM
+GROUP BY YEAR(Activity_Date), MONTH(Activity_Date), DATEPART(HOUR, Activity_Time)
+ORDER BY Activity_Year, Activity_Month, Activity_Hour;
+
