@@ -1,0 +1,313 @@
+SELECT * 
+FROM [dbo].[Airplane_Crashes]
+
+---------------------------------------------------------------------------------------------
+-- Creating new table to normalize data by grouping [TypeID] according to [Airplane Type]
+---------------------------------------------------------------------------------------------
+CREATE TABLE [dbo].[AirplaneType]
+(
+    [TypeID] INT IDENTITY(1,1) NOT NULL,  -- Setting Up [TypeID] AS PRIMARY KEY (Identity = identifies column, and automatically generates columns. (starts at 1, and increases by 1)
+    [TypeName] NVARCHAR(500),
+    PRIMARY KEY (TypeID)
+
+);
+      
+INSERT INTO [dbo].[AirplaneType]([TypeName]) 
+(SELECT DISTINCT                            ---- Inserts DISTINCT TYPE values into table (and automatically Assign values due to IDENTITY (1,1) query above )
+[Type]
+FROM [dbo].[Airplane_Crashes]
+    WHERE [Type] IS NOT NULL)
+
+----- Checking INSERT Worked Currently. (Assured all types were distinct and Assigned ID)
+SELECT * 
+FROM [dbo].[AirplaneType]
+
+------------------------------
+-- ADDING [TYPEID] ON Crashes
+------------------------------
+
+ALTER TABLE [dbo].[Airplane_Crashes]
+ADD [TypeID] INT NULL; 
+
+SELECT * 
+FROM [dbo].[Airplane_Crashes]
+
+--------------------------------------------
+---- Adding TypeID Values (filling in rows)
+--------------------------------------------
+UPDATE [dbo].[Airplane_Crashes] 
+SET [TypeID] = s.[TypeID] -- S = SOURCE 
+FROM (
+    SELECT 
+c.[Type]
+,t.[Typename]
+,t.[typeID]
+FROM [dbo].[Airplane_Crashes] c 
+LEFT OUTER JOIN [dbo].[AirplaneType] t
+ON t.[typename] = c.[Type]
+) s
+WHERE [dbo].[Airplane_Crashes].[Type] = S.[Type]
+
+---------------------------------------------------
+-- Making sure NULL Values align with both columns 
+---------------------------------------------------
+
+SELECT * 
+FROM [dbo].[Airplane_Crashes]
+WHERE ([TypeID] IS NULL 
+    AND [Type] IS NOT NULL)
+    OR ([TypeID] IS NOT NULL 
+        AND [TypeID] IS NULL)
+
+---------------------------------------------------------------------------------------------
+-- Checking LEFT OUTER JOIN (Making sure Condition is correct. All Types uniquely identified)
+---------------------------------------------------------------------------------------------
+
+SELECT 
+c.[Type]
+,t.[Typename]
+,t.[typeID]
+FROM [dbo].[Airplane_Crashes] c 
+LEFT OUTER JOIN [dbo].[AirplaneType] t
+ON t.[typename] = c.[Type]
+ORDER BY 1 DESC;
+
+---------------------------------------------------------------------------------------------
+-- Normalized Table. (Having 1 column as TypeName instead of 2 Columns, [TypeName] and [Type]
+---------------------------------------------------------------------------------------------
+ALTER TABLE [dbo].[Airplane_Crashes]
+DROP COLUMN [Type]
+
+-- *** 
+SELECT 
+t.[TypeName]
+,c.*
+FROM [dbo].[Airplane_Crashes] c 
+INNER JOIN [AirplaneType] t
+ON t.[TypeID] = c.[TypeID]
+  
+-----------------------------------------------------------
+-- Editing[TypeName] value without Conflicting with TypeID 
+-----------------------------------------------------------
+
+-- 1. Find[TypeName] Value That I want to change
+SELECT 
+[TypeName]
+FROM [dbo].[AirplaneType]
+       WHERE [Typename] = 'Aero Commander  520'
+
+-- 2. Changing [TypeName] Value according to TypeID 
+
+UPDATE [dbo].[AirplaneType]
+SET [TypeName] = 'Aero Commander 520'
+    WHERE [TypeID] = 6
+
+-- 3. Validating that [TypeName] Value has been Corrected and TypeID remains the same
+    SELECT * 
+    FROM [dbo].[AirplaneType]
+      WHERE [Typename] = 'Aero Commander 520'
+
+ALTER TABLE [dbo].[Airplane_Crashes]
+ADD [Crash_Type] NVARCHAR(50) NULL 
+
+----------------------------------------------
+-- Adding [Crash_Type] Column and it's values 
+----------------------------------------------
+
+ALTER TABLE [dbo].[airplane_crashes]
+ADD [Crash_Type] NVARCHAR(50) NULL
+
+UPDATE dbo.airplane_crashes
+SET [Crash_Type] = 'Weather' 
+WHERE SUMMARY LIKE '%Weather%'
+OR SUMMARY LIKE '%Storm%'
+OR SUMMARY LIKE '%fog%'
+OR SUMMARY LIKE '%wind%'
+OR SUMMARY LIKE '%gale%'
+OR SUMMARY LIKE '%lightning%'
+OR SUMMARY LIKE '%Rain%'
+OR SUMMARY LIKE '%hail%'
+OR SUMMARY LIKE '%visibility%'
+OR SUMMARY LIKE '%snow%'
+OR SUMMARY LIKE '%monsoon%'
+
+UPDATE dbo.airplane_crashes
+SET [Crash_Type] = 'Mechanical' 
+WHERE SUMMARY LIKE '%Engine%' 
+OR SUMMARY LIKE '%fire%'
+OR SUMMARY LIKE '%Explosion%'
+OR SUMMARY LIKE '%Exploded%'
+OR SUMMARY LIKE '%malfunction%'
+OR SUMMARY LIKE '%fuselage%'
+OR SUMMARY LIKE '%rudder%'
+AND Summary NOT LIKE '%shot%'
+AND Summary NOT LIKE '%weather%'
+AND Summary NOT LIKE '%storm%'
+AND Summary NOT LIKE '%wind%'
+AND Summary NOT LIKE '%terrorist%'
+AND Summary NOT LIKE '%bomb%'
+
+UPDATE dbo.airplane_crashes
+SET [Crash_Type] = 'Other'
+WHERE [Crash_Type] IS NULL
+
+----------------------------
+-- AVG Passenger Per flight
+----------------------------
+
+SELECT
+t.[TypeName]
+,SUM(c.[aboard]) AS Total_Passengers
+,COUNT([TypeName]) AS Number_Of_Flights
+,AVG(c.[Aboard]) AS AVG_Passenger_Per_Flight
+FROM [dbo].[Airplane_Crashes] c
+    LEFT OUTER JOIN [dbo].[AirplaneType] t
+    ON t.[TypeID] = c.[TypeID]
+GROUP BY t.[TypeName]
+
+-----------------------------
+-- AVG Fatalities Per Flight 
+-----------------------------
+
+SELECT
+t.[TypeName]
+,SUM(c.[Fatalities]) AS Total_Passengers
+,COUNT([TypeName]) AS Number_Of_Flights
+,AVG(c.[Fatalities]) AS AVG_Deaths_Per_Flight
+FROM [dbo].[Airplane_Crashes] c
+    LEFT OUTER JOIN [dbo].[AirplaneType] t
+    ON t.[TypeID] = c.[TypeID]
+GROUP BY t.[TypeName]
+
+---------------------------------
+-- Aircraft with Most Fatalities 
+---------------------------------
+
+SELECT 
+t.[TypeName]
+,SUM(c.[Fatalities]) AS TotalFatalities
+FROM [dbo].[Airplane_Crashes] c 
+INNER JOIN [AirplaneType] t
+ON t.[TypeID] = c.[TypeID]
+    GROUP BY [TypeName]
+    ORDER BY SUM(c.[Fatalities]) DESC; 
+
+-------------------------------
+-- Aircraft with Most Crashes
+-------------------------------
+
+SELECT 
+t.[TypeName]
+,COUNT(t.[TypeName]) AS TimesCrashed
+FROM [dbo].[Airplane_Crashes] c 
+LEFT OUTER JOIN [dbo].[AirplaneType] t
+ON t.[TypeID] = c.[TypeID]
+GROUP BY t.[TypeName]
+ORDER BY COUNT(t.[TypeName]) DESC;
+
+---------------------------------
+-- Aircraft With Most Fatalities
+---------------------------------
+
+SELECT 
+t.[TypeName]
+,SUM(c.[Fatalities]) AS Total_Fatalities
+FROM[dbo].[Airplane_Crashes] c
+LEFT OUTER JOIN [dbo].[AirplaneType] t
+ON t.[TypeID] = c.[TypeID]
+GROUP BY t.[TypeName]
+ORDER BY SUM(c.[Fatalities]) DESC; 
+
+-------------------------------------------
+-- Military vs Commercial/Civilian Crashes
+-------------------------------------------
+
+SELECT 
+SUM(CASE WHEN LOWER([Operator]) LIKE '%Military%' THEN 1 ELSE 0 END) AS Military_Crashes
+,SUM(CASE WHEN LOWER([Operator]) NOT LIKE '%Military%' THEN 1 ELSE 0 END) AS CC_Crashes
+FROM [dbo].[Airplane_Crashes]; 
+
+--------------------------------------
+-- Validating Government and CC COUNT 
+--------------------------------------
+
+SELECT 
+    COUNT(CASE WHEN [Operator] LIKE '%Military%' THEN 1 END) AS Military_Crashes
+FROM 
+    [dbo].[Airplane_Crashes]; -- 781 
+
+SELECT 
+COUNT([Operator])
+FROM [dbo].[Airplane_Crashes] -- (5250 - 781 = 4,469)
+
+
+------------------------------------------
+-- Mortality Rate Per Aircraft Type
+------------------------------------------
+
+SELECT 
+t.[TypeName]
+,SUM(c.[aboard]) AS Total_Passengers
+,SUM ([Fatalities]) AS Total_Deaths
+,ROUND (CAST(CASE
+    WHEN SUM([Aboard]) = 0
+        OR SUM(c.[Aboard]) IS NULL 
+        OR SUM(c.[Fatalities]) IS NULL THEN NULL
+    WHEN SUM(c.[Fatalities]) = 0 THEN 100
+        ELSE (CAST(SUM(c.[Fatalities]) AS FLOAT)/CAST(SUM(c.[Aboard]) AS FLOAT)) * 100 
+    END AS FLOAT),2) AS Mortality_Rate
+FROM [dbo].[Airplane_Crashes] c 
+LEFT OUTER JOIN [dbo].[AirplaneType] t 
+ON t.[TypeID] = c.[TypeID]
+GROUP BY t.[TypeName]
+
+------------------------------
+-- Mortality Rate per Year 
+------------------------------
+
+SELECT 
+DISTINCT YEAR([DATE]) AS 'Year'
+,ROUND (CAST(CASE 
+    WHEN SUM([Aboard]) = 0 
+        OR SUM([Aboard]) IS NULL
+        OR SUM([Fatalities]) IS NULL THEN NULL 
+    WHEN SUM([Fatalities]) = 0 THEN 100
+        ELSE (CAST(SUM([Fatalities])AS FLOAT)/CAST(SUM([Aboard]) AS FLOAT)) * 100
+    END AS FLOAT),2) AS Mortality_Rate
+FROM [dbo].[Airplane_Crashes]
+    GROUP BY Year([Date])
+    ORDER BY ([Mortality_Rate]) DESC; 
+
+----------------------------------------------
+-- Annual AVG Mortality Rate Per Plane 
+----------------------------------------------
+
+SELECT 
+DISTINCT YEAR([DATE]) AS 'Year'
+,t.[typename]
+,SUM(c.[aboard]) AS Total_Annual_Passengers
+,SUM(c.[Fatalities]) AS Total_Annual_Fatalities
+,ROUND (CAST(CASE 
+    WHEN SUM([Aboard]) = 0 
+        OR SUM([Aboard]) IS NULL
+        OR SUM([Fatalities]) IS NULL THEN NULL 
+    WHEN SUM([Fatalities]) = 0 THEN 100
+        ELSE (CAST(SUM([Fatalities])AS FLOAT)/CAST(SUM([Aboard]) AS FLOAT)) * 100
+    END AS FLOAT),2) AS Mortality_Rate
+FROM [dbo].[Airplane_Crashes] c
+    LEFT OUTER JOIN [dbo].[AirplaneType] t 
+        ON t.[typeID] = c.[typeID]
+    GROUP BY Year([Date]), t.[typename]
+    ORDER BY YEAR([Date]) ASC; 
+
+
+---------------------------------------------------
+-- Checking for conditions with mathematical errors 
+---------------------------------------------------
+
+SELECT *
+FROM [dbo].[Airplane_Crashes]
+WHERE [Aboard] = 0  
+    OR [Aboard] IS NULL 
+    OR [Fatalities] IS NULL 
+
