@@ -6,7 +6,7 @@
 🔭 I am currently working on multiple data analytics projects <br />🌱 I am learning **SQL, Tableau, Power BI, Google Analytics, and Python**<br />👨&zwj;💻 All of my projects are available [here](https://cruzadoalanis.github.io/) <br />
 📄  Check out my [resume](https://www.linkedin.com/in/alanis-cruzado/overlay/1715893937461/single-media-viewer/?profileId=ACoAADf8YsABE1cZx3qB4wEg3drsWO28ZLh2xug) <br />
 📫 Contact me at [Cruzado.Alanis@gmail.com](mailto:Cruzado.Alanis@gmail.com)
-<h1 class="text-center text-xl font-bold" style="text-align: center;"><br /><br /></h1>
+<h1 class="text-center text-xl font-bold" style="text-align: center;"</h1>
 <p>&nbsp;
 <h3 align="left">Connect with me:</h3>
 <p align="left">
