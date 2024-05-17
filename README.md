@@ -3,15 +3,15 @@
 
 ![](https://github.com/CruzadoAlanis/SQLPortfolio/blob/main/Images/Profile%20Image%20smaller%20circle%20style.png?raw=true)
 
-<p align="center"> <img src="https://komarev.com/ghpvc/?username=cruzadoalanis&label=Profile%20views&color=0e75b6&style=flat" alt="cruzadoalanis" /> </p>
+<p align="left"> <img "https://komarev.com/ghpvc/?username=cruzadoalanis&label=Profile%20views&color=0e75b6&style=flat" alt="cruzadoalanis" /> </p>
 
-- 🔭 I am currently working on multiple data analytics projects
+- 🔭 I’m currently working on multiple analytic projects for my portfolio
 
-- 🌱 I am learning **SQL, Tableau, Power BI, Google Analytics, and Python**
+- 🌱 I’m currently learning **SQL, Google analytics, Python, R and more.**
 
-- 👨&zwj;💻 All of my projects are available [here](https://cruzadoalanis.github.io/)
+- 📝 [Here's my resume](https://www.linkedin.com/in/alanis-cruzado/overlay/1715893937461/single-media-viewer/?profileId=ACoAADf8YsABE1cZx3qB4wEg3drsWO28ZLh2xug)
 
-- 📄  Check out my [resume](https://www.linkedin.com/in/alanis-cruzado/overlay/1715893937461/single-media-viewer/?profileId=ACoAADf8YsABE1cZx3qB4wEg3drsWO28ZLh2xug)
+- 👨‍💻 All of my projects are available at [here](https://cruzadoalanis.github.io/)
 
 - 📫 Contact me at [Cruzado.Alanis@gmail.com](mailto:Cruzado.Alanis@gmail.com)
   
