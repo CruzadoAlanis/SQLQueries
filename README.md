@@ -1,23 +1,18 @@
 <h1 align="center">Hi 👋, I'm Alanis Cruzado</h1>
 <h3 align="center">A passionate data analyst in Fort Lauderdale, Florida</h3>
 
-![](https://github.com/CruzadoAlanis/SQLPortfolio/blob/main/Images/Profile%20Image%20smaller%20circle%20style.png?raw=true)
+<p align="center" ![](https://github.com/CruzadoAlanis/SQLPortfolio/blob/main/Images/Profile%20Image%20smaller%20circle%20style.png?raw=true) /> </p>
 
 <p align="left"> <img src="https://komarev.com/ghpvc/?username=cruzadoalanis&label=Profile%20views&color=0e75b6&style=flat" alt="cruzadoalanis" /> </p>
 
-<p align="center">
 🔭 I’m currently working on multiple analytic projects for my portfolio
 
-<p align="center">
 🌱 I’m currently learning **SQL, Google analytics, Python, R and more.**
 
-<p align="center">
 📝 Here's my [resume](https://www.linkedin.com/in/alanis-cruzado/overlay/1715893937461/single-media-viewer/?profileId=ACoAADf8YsABE1cZx3qB4wEg3drsWO28ZLh2xug)
 
-<p align="center">
 👨‍💻 All of my projects are available [Here](https://cruzadoalanis.github.io/)
 
-<p align="center">
 ✉️ [Send me an email](mailto:Cruzado.Alanis@gmail.com) 
 
 <h3 align="center">Connect with me:</h3>
