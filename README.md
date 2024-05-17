@@ -5,7 +5,7 @@
 
 <p align="left"> <img src="https://komarev.com/ghpvc/?username=cruzadoalanis&label=Profile%20views&color=0e75b6&style=flat" alt="cruzadoalanis" /> </p>
 
-<h3 align="center">
+<p align="center">
 🔭 I’m currently working on multiple analytic projects for my portfolio
 
 🌱 I’m currently learning **SQL, Google analytics, Python, R and more.**
@@ -14,7 +14,7 @@
 
 👨‍💻 All of my projects are available [Here](https://cruzadoalanis.github.io/)
 
-✉️ [Send me an email](mailto:Cruzado.Alanis@gmail.com)</h3>
+✉️ [Send me an email](mailto:Cruzado.Alanis@gmail.com) /> </p>
 
 <h3 align="center">Connect with me:</h3>
 <p align="center">
