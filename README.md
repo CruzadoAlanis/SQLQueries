@@ -3,7 +3,7 @@
 
 ![](https://github.com/CruzadoAlanis/SQLPortfolio/blob/main/Images/Profile%20Image%20smaller%20circle%20style.png?raw=true)
 
-<p align="left"> <img src="https://komarev.com/ghpvc/?username=cruzadoalanis&label=Profile%20views&color=0e75b6&style=flat" alt="cruzadoalanis" /> </p>
+<p align="center"> <img src="https://komarev.com/ghpvc/?username=cruzadoalanis&label=Profile%20views&color=0e75b6&style=flat" alt="cruzadoalanis" /> </p>
 
 🔭 I’m currently working on multiple analytic projects for my portfolio
 
