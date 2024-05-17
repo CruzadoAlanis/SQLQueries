@@ -5,17 +5,16 @@
 
 <p align="left"> <img src="https://komarev.com/ghpvc/?username=cruzadoalanis&label=Profile%20views&color=0e75b6&style=flat" alt="cruzadoalanis" /> </p>
 
-🔭 I am currently working on multiple data analytics projects <br />
+- 🔭 I am currently working on multiple data analytics projects
 
-🌱 I am learning **SQL, Tableau, Power BI, Google Analytics, and Python**<br />
+- 🌱 I am learning **SQL, Tableau, Power BI, Google Analytics, and Python**
 
-👨&zwj;💻 All of my projects are available [here]
-(https://cruzadoalanis.github.io/) <br />
+- 👨&zwj;💻 All of my projects are available [here](https://cruzadoalanis.github.io/)
 
-📄  Check out my [resume](https://www.linkedin.com/in/alanis-cruzado/overlay/1715893937461/single-media-viewer/?profileId=ACoAADf8YsABE1cZx3qB4wEg3drsWO28ZLh2xug) <br />
-📫 Contact me at [Cruzado.Alanis@gmail.com](mailto:Cruzado.Alanis@gmail.com)
-<h1 class="text-center text-xl font-bold" style="text-align: center;"</h1>
-<p>&nbsp;
+- 📄  Check out my [resume](https://www.linkedin.com/in/alanis-cruzado/overlay/1715893937461/single-media-viewer/?profileId=ACoAADf8YsABE1cZx3qB4wEg3drsWO28ZLh2xug)
+
+- 📫 Contact me at [Cruzado.Alanis@gmail.com](mailto:Cruzado.Alanis@gmail.com)
+  
 <h3 align="left">Connect with me:</h3>
 <p align="left">
 <a href="https://linkedin.com/in/alanis cruzado" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" alt="alanis cruzado" height="30" width="40" /></a>
