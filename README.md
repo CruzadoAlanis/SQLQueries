@@ -1,9 +1,17 @@
-<p style="text-align: center;"><strong>Hi </strong><strong>👋</strong><strong>, my name is Alanis Cruzado.<br /></strong>An aspiring Data Analyst based in Fort Lauderdale, FL
+<h1 align="center">Hi 👋, I'm Alanis Cruzado</h1>
+<h3 align="center">A passionate data analyst in Fort Lauderdale, Florida</h3>
 
-![](https://github.com/CruzadoAlanis/SQLPortfolio/blob/main/Images/Profile%20Image%20smaller%20circle%20style.png?raw=true) <hr />
-<p align="left"> <img src="https://komarev.com/ghpvc/?username=cruzadoalanis&label=Profile%20views&color=0e75b6&style=flat" alt="cruzadoalanis" /> 
+![](https://github.com/CruzadoAlanis/SQLPortfolio/blob/main/Images/Profile%20Image%20smaller%20circle%20style.png?raw=true)
 
-🔭 I am currently working on multiple data analytics projects <br />🌱 I am learning **SQL, Tableau, Power BI, Google Analytics, and Python**<br />👨&zwj;💻 All of my projects are available [here](https://cruzadoalanis.github.io/) <br />
+<p align="left"> <img src="https://komarev.com/ghpvc/?username=cruzadoalanis&label=Profile%20views&color=0e75b6&style=flat" alt="cruzadoalanis" /> </p>
+
+🔭 I am currently working on multiple data analytics projects <br />
+
+🌱 I am learning **SQL, Tableau, Power BI, Google Analytics, and Python**<br />
+
+👨&zwj;💻 All of my projects are available [here]
+(https://cruzadoalanis.github.io/) <br />
+
 📄  Check out my [resume](https://www.linkedin.com/in/alanis-cruzado/overlay/1715893937461/single-media-viewer/?profileId=ACoAADf8YsABE1cZx3qB4wEg3drsWO28ZLh2xug) <br />
 📫 Contact me at [Cruzado.Alanis@gmail.com](mailto:Cruzado.Alanis@gmail.com)
 <h1 class="text-center text-xl font-bold" style="text-align: center;"</h1>
