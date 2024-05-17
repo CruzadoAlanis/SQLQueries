@@ -5,15 +5,15 @@
 
 <p align="left"> <img src="https://komarev.com/ghpvc/?username=cruzadoalanis&label=Profile%20views&color=0e75b6&style=flat" alt="cruzadoalanis" /> </p>
 
-- 🔭 I’m currently working on multiple analytic projects for my portfolio
+🔭 I’m currently working on multiple analytic projects for my portfolio
 
-- 🌱 I’m currently learning **SQL, Google analytics, Python, R and more.**
+🌱 I’m currently learning **SQL, Google analytics, Python, R and more.**
 
-- 📝 Here's my [resume](https://www.linkedin.com/in/alanis-cruzado/overlay/1715893937461/single-media-viewer/?profileId=ACoAADf8YsABE1cZx3qB4wEg3drsWO28ZLh2xug)
+📝 Here's my [resume](https://www.linkedin.com/in/alanis-cruzado/overlay/1715893937461/single-media-viewer/?profileId=ACoAADf8YsABE1cZx3qB4wEg3drsWO28ZLh2xug)
 
-- 👨‍💻 All of my projects are available [Here](https://cruzadoalanis.github.io/)
+👨‍💻 All of my projects are available [Here](https://cruzadoalanis.github.io/)
 
-- ✉️ [Send me an email](mailto:Cruzado.Alanis@gmail.com)
+✉️ [Send me an email](mailto:Cruzado.Alanis@gmail.com)
 
 <h3 align="left">Connect with me:</h3>
 <p align="left">
