@@ -15,7 +15,7 @@
 
 👨‍💻 All of my projects are available [Here](https://cruzadoalanis.github.io/)
 
-✉️ [Send me an email](mailto:Cruzado.Alanis@gmail.com) 
+✉️ [Cruzado.Alanis@gmail.com](mailto:Cruzado.Alanis@gmail.com) 
 
 <h3 align="center">Connect with me:</h3>
 <p align="center">
