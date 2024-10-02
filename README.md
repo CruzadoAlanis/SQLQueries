@@ -11,7 +11,7 @@
 
 🌱 I’m currently learning **SQL, Tableau, Excel, Google Analytics, Python, R and more.**
 
-📝 Here's my [resume](https://www.linkedin.com/in/alanis-cruzado/overlay/1719610618366/single-media-viewer/?profileId=ACoAADf8YsABE1cZx3qB4wEg3drsWO28ZLh2xug)
+📝 Here's my [resume]([https://www.linkedin.com/in/alanis-cruzado/overlay/1719610618366/single-media-viewer/?profileId=ACoAADf8YsABE1cZx3qB4wEg3drsWO28ZLh2xug](https://www.linkedin.com/in/alanis-cruzado/overlay/1726080467307/single-media-viewer/?profileId=ACoAADf8YsABE1cZx3qB4wEg3drsWO28ZLh2xug))
 
 👨‍💻 My projects are available [Here](https://cruzadoalanis.github.io/AlanisCruzado.github.io/#)
 
